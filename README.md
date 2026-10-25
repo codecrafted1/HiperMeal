@@ -67,12 +67,13 @@ The frontend talks to `http://127.0.0.1:8000` by default; override with `VITE_AP
 | POST | `/nutrition` | Recompute after edits: `{items:[{name, grams, per100?}]}` |
 
 ## Limitations
-- Nutrition dataset is small (about 50 common foods, many Indian staples) and values are approximate; it is not a clinical reference.
+- Nutrition dataset is small (about 50 common foods, many Indian staples). 7 entries (rice, chapati, lentils, chickpeas, egg, yogurt, paneer) are checked against USDA FoodData Central or a product label and carry a `ref`; the rest are approximate. It is not a clinical reference.
+- Dish names that contain a dataset food (for example "paneer butter masala") match the plain ingredient and may overstate calories; the item is shown as matched, so check it in the review step.
 - Portion estimation from a single photo is inherently rough - always review before logging.
 - Diary is stored per browser; there are no accounts.
 
 ## Attribution
 - Gemma 4 by Google, accessed through the Gemini API.
 - React, Vite, FastAPI, Pillow, lucide-react (open source).
-- Nutrition values in `nutrition.json` were compiled by the team from general food-composition knowledge for demo purposes.
+- Nutrition values in `nutrition.json`: USDA FoodData Central (SR Legacy, public domain) for rice, chapati/roti, lentils, chickpeas, egg and plain yogurt; Amul Malai Paneer label for paneer. Other entries are approximate team-compiled demo values (no `ref`).
 - Project scaffold and original dashboard UI by the HiperMeal team; analysis flow, dataset matching, editing and logging added during the Hack Day with AI coding assistance (Claude).
