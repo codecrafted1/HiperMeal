@@ -1578,3 +1578,184 @@ label:focus-within {
     transition-duration: .01ms !important;
   }
 }
+
+/* ---------- Review & correct card ---------- */
+.review-card {
+  min-width: 0;
+  padding: 23px;
+  border: 1px solid #cfdcc3;
+  border-radius: 17px;
+  background: #fff;
+  box-shadow: 0 5px 24px #31472f0d;
+}
+
+.review-card h3 {
+  margin: 6px 0 0;
+}
+
+.review-description {
+  margin: 12px 0 4px;
+  color: #6c7a63;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.review-list {
+  margin-top: 14px;
+}
+
+.review-head,
+.review-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 76px 52px 32px;
+  align-items: center;
+  gap: 8px;
+}
+
+.review-head {
+  padding: 0 2px 6px;
+  color: #8a9a79;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+}
+
+.review-row {
+  padding: 8px 0;
+  border-top: 1px solid #eef1ea;
+}
+
+.review-name,
+.review-grams {
+  width: 100%;
+  min-width: 0;
+  height: 36px;
+  padding: 0 10px;
+  border: 1px solid #e1e7da;
+  border-radius: 9px;
+  color: #2f4430;
+  font: inherit;
+  font-size: 13px;
+  background: #fbfcf9;
+}
+
+.review-name:focus,
+.review-grams:focus {
+  outline: 2px solid #b9cfa9;
+  outline-offset: 1px;
+}
+
+.review-kcal {
+  color: #2f4430;
+  font-size: 13px;
+  font-weight: 600;
+  text-align: right;
+}
+
+.review-source {
+  grid-column: 1 / -1;
+  margin-top: -2px;
+  color: #98a58b;
+  font-size: 10.5px;
+}
+
+.add-item-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin: 4px 0 0;
+  padding: 8px 12px;
+  border: 1px dashed #c3d1b5;
+  border-radius: 9px;
+  color: #5d7650;
+  font-size: 12px;
+  font-weight: 600;
+  background: transparent;
+  cursor: pointer;
+}
+
+.add-item-button:hover {
+  background: #f5f8ef;
+}
+
+.review-totals {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+  margin: 16px 0 10px;
+  padding: 12px;
+  border-radius: 12px;
+  background: #f5f8ef;
+}
+
+.review-totals div {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  text-align: center;
+}
+
+.review-totals strong {
+  color: #2f4430;
+  font-size: 17px;
+}
+
+.review-totals span {
+  color: #8a9a79;
+  font-size: 10px;
+  letter-spacing: .6px;
+  text-transform: uppercase;
+}
+
+.review-note {
+  margin: 0 0 14px;
+  color: #98a58b;
+  font-size: 11px;
+  line-height: 1.45;
+}
+
+/* ---------- Recent meals list ---------- */
+.meal-list {
+  margin: 14px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.meal-list li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 0;
+  border-top: 1px solid #eef1ea;
+}
+
+.meal-list li > div {
+  min-width: 0;
+}
+
+.meal-list strong {
+  display: block;
+  overflow: hidden;
+  color: #2f4430;
+  font-size: 13px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.meal-list span {
+  color: #8a9a79;
+  font-size: 11px;
+}
+
+@media (max-width: 480px) {
+  .review-head,
+  .review-row {
+    grid-template-columns: minmax(0, 1fr) 64px 44px 32px;
+  }
+
+  .review-totals strong {
+    font-size: 15px;
+  }
+}

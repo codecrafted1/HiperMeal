@@ -1,0 +1,47 @@
+# DigitalOcean App Platform spec for HiperMeal.
+# Create the app with:  doctl apps create --spec .do/app.yaml
+# (or paste this into App Platform > Create App > Edit Your App Spec).
+# After creating, open the app's Settings and set the HF_TOKEN secret.
+name: hipermeal
+region: blr  # Bangalore; change if you prefer another region
+services:
+  - name: api
+    github:
+      repo: codecrafted1/HiperMeal
+      branch: main
+      deploy_on_push: true
+    source_dir: backend
+    environment_slug: python
+    run_command: uvicorn main:app --host 0.0.0.0 --port 8080
+    http_port: 8080
+    instance_count: 1
+    instance_size_slug: apps-s-1vcpu-0.5gb
+    health_check:
+      http_path: /health
+    envs:
+      - key: HF_TOKEN
+        scope: RUN_TIME
+        type: SECRET
+        # value is set in the DigitalOcean dashboard, never committed
+      - key: MOCK_MODE
+        scope: RUN_TIME
+        value: "0"
+    routes:
+      - path: /api   # prefix is stripped, so FastAPI still sees /analyze, /health, ...
+
+static_sites:
+  - name: web
+    github:
+      repo: codecrafted1/HiperMeal
+      branch: main
+      deploy_on_push: true
+    source_dir: frontend
+    environment_slug: node-js
+    build_command: npm ci && npm run build
+    output_dir: dist
+    envs:
+      - key: VITE_API_URL
+        scope: BUILD_TIME
+        value: /api
+    routes:
+      - path: /

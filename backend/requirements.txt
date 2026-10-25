@@ -1,6 +1,6 @@
-﻿
-fastapi
+﻿fastapi
 uvicorn[standard]
 python-multipart
 pillow
 requests
+pydantic
