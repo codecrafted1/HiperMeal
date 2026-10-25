@@ -1,4 +1,5 @@
 import base64
+import csv
 import io
 import json
 import os
@@ -52,19 +53,85 @@ NOTE = (
 # Small local nutrition dataset (per 100 g)
 # --------------------------------------------------------------------------
 
-_data = json.loads(
-    (Path(__file__).parent / "nutrition.json").read_text(encoding="utf-8")
-)
-FOODS = _data["foods"]
-_INDEX = {}
-for _f in FOODS:
-    _INDEX[_f["name"].lower()] = _f
-    for _a in _f.get("aliases", []):
-        _INDEX[_a.lower()] = _f
+def _num(value, default=0.0) -> float:
+    try:
+        return max(0.0, float(value))
+    except (TypeError, ValueError):
+        return default
 
 
 def _normalise(name: str) -> str:
     return re.sub(r"\s+", " ", re.sub(r"[^a-z0-9()\s]", " ", name.lower())).strip()
+
+
+def _keys(entry: dict) -> set:
+    """Every lookup key for a food: the name, each side of 'A / B', the name
+    without any '(...)' part, and all aliases."""
+    keys = set()
+    for text in [entry["name"], *entry.get("aliases", [])]:
+        for part in re.split(r"\s*/\s*", text):
+            keys.add(_normalise(part))
+            keys.add(_normalise(re.sub(r"\([^)]*\)", " ", part)))
+    keys.discard("")
+    return keys
+
+
+def _load_csv(path: Path) -> List[dict]:
+    foods = []
+    with open(path, encoding="utf-8-sig", newline="") as fh:
+        for row in csv.DictReader(fh):
+            name = (row.get("food_name") or "").strip()
+            cols = {
+                "calories": "kcal_per_100g",
+                "protein": "protein_per_100g",
+                "carbs": "carbs_per_100g",
+                "fat": "fat_per_100g",
+            }
+            try:
+                vals = {k: float(row[c]) for k, c in cols.items()}
+            except (TypeError, ValueError, KeyError):
+                continue
+            if not name:
+                continue
+            aliases = [
+                a.strip()
+                for a in (row.get("aliases") or "").split(";")
+                if a.strip()
+            ]
+            foods.append(
+                {
+                    "name": name,
+                    "aliases": aliases,
+                    "serving": _num(row.get("serving_g"), 100.0) or 100.0,
+                    "category": (row.get("category") or "").strip(),
+                    "ref": None,
+                    **vals,
+                }
+            )
+    return foods
+
+
+_BASE = Path(__file__).parent
+_json_foods = json.loads((_BASE / "nutrition.json").read_text(encoding="utf-8"))["foods"]
+_verified = [f for f in _json_foods if f.get("ref")]  # checked against USDA / a label
+_approx = [f for f in _json_foods if not f.get("ref")]
+_csv_foods = _load_csv(_BASE / "nutrition_starter.csv")
+
+# Later layers win on an exact name/alias clash:
+#   approximate JSON  <  starter CSV (dishes, servings)  <  verified JSON
+_INDEX = {}
+for _layer in (_approx, _csv_foods, _verified):
+    for _f in _layer:
+        for _k in _keys(_f):
+            _INDEX[_k] = _f
+
+_seen = set()
+FOODS = []
+for _f in (*_verified, *_csv_foods, *_approx):
+    _n = _normalise(_f["name"])
+    if _n not in _seen:
+        _seen.add(_n)
+        FOODS.append(_f)
 
 
 def lookup_food(name: str) -> Optional[dict]:
@@ -89,19 +156,12 @@ def _per100(entry: dict) -> dict:
     return {k: entry[k] for k in ("calories", "protein", "carbs", "fat")}
 
 
-def _num(value, default=0.0) -> float:
-    try:
-        return max(0.0, float(value))
-    except (TypeError, ValueError):
-        return default
-
-
 def build_item(name: str, grams: float, model_macros: Optional[dict] = None,
                per100: Optional[dict] = None) -> dict:
     """Return a normalised item. Prefers dataset values; falls back to the
     per-100g values supplied by the client, then to the model's estimate."""
-    grams = _num(grams, 100.0) or 100.0
     entry = lookup_food(name)
+    grams = _num(grams, 0.0) or (entry or {}).get("serving") or 100.0
     if entry:
         p100, source = _per100(entry), "dataset"
     elif per100:

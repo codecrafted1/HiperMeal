@@ -7,7 +7,7 @@ Turn a meal photo into a reviewable nutrition record without typing every food i
 
 1. **Upload** a meal photo.
 2. **Gemma 4** (multimodal, open-weights) identifies the visible foods and estimates a portion for each.
-3. Each food is matched against a small **local nutrition dataset** (`backend/nutrition.json`, per 100 g). Foods not in the dataset fall back to the model's own estimate and are clearly labelled.
+3. Each food is matched against a small **local nutrition dataset** (`backend/nutrition_starter.csv` plus the checked `backend/nutrition.json`, per 100 g). Foods not in the dataset fall back to the model's own estimate and are clearly labelled.
 4. **Review and correct**: rename items, change grams, remove or add items. Totals recompute instantly.
 5. **Confirm and log** the meal to a daily diary with calorie and macro totals.
 
@@ -21,7 +21,7 @@ Turn a meal photo into a reviewable nutrition record without typing every food i
 ```
 React (Vite) --/analyze--> FastAPI --> Gemma 4 (Gemini API; Hugging Face as fallback)
      |                        |
-     |--/nutrition (recompute)--> nutrition.json lookup (aliases + fuzzy match)
+     |--/nutrition (recompute)--> nutrition dataset lookup (CSV + JSON, aliases)
      '--/foods (autocomplete)
 ```
 
@@ -67,13 +67,14 @@ The frontend talks to `http://127.0.0.1:8000` by default; override with `VITE_AP
 | POST | `/nutrition` | Recompute after edits: `{items:[{name, grams, per100?}]}` |
 
 ## Limitations
-- Nutrition dataset is small (about 50 common foods, many Indian staples). 7 entries (rice, chapati, lentils, chickpeas, egg, yogurt, paneer) are checked against USDA FoodData Central or a product label and carry a `ref`; the rest are approximate. It is not a clinical reference.
-- Dish names that contain a dataset food (for example "paneer butter masala") match the plain ingredient and may overstate calories; the item is shown as matched, so check it in the review step.
+- Nutrition data has two layers: `backend/nutrition_starter.csv` (about 74 common foods and Indian dishes with typical serving sizes; approximate, per its own source note) and `backend/nutrition.json` (7 staples checked against USDA FoodData Central or a product label, each with a `ref`). On an exact name or alias clash the checked values win. It is not a clinical reference.
+- Matching is by name and alias, then by whole-word containment (longest match wins), so an unusual dish name can still land on a nearby entry; check the matched food in the review step.
 - Portion estimation from a single photo is inherently rough - always review before logging.
 - Diary is stored per browser; there are no accounts.
 
 ## Attribution
 - Gemma 4 by Google, accessed through the Gemini API.
 - React, Vite, FastAPI, Pillow, lucide-react (open source).
-- Nutrition values in `nutrition.json`: USDA FoodData Central (SR Legacy, public domain) for rice, chapati/roti, lentils, chickpeas, egg and plain yogurt; Amul Malai Paneer label for paneer. Other entries are approximate team-compiled demo values (no `ref`).
+- `backend/nutrition_starter.csv`: starter nutrition dataset compiled by the team (approximate typical values; its source note says to verify against INDB / IFCT / USDA).
+- `backend/nutrition.json`: USDA FoodData Central (SR Legacy, public domain) for rice, chapati/roti, lentils, chickpeas, egg and plain yogurt; Amul Malai Paneer product label for paneer.
 - Project scaffold and original dashboard UI by the HiperMeal team; analysis flow, dataset matching, editing and logging added during the Hack Day with AI coding assistance (Claude).

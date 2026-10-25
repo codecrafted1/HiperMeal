@@ -1,0 +1,75 @@
+food_name,aliases,category,serving_desc,serving_g,calories_kcal,protein_g,carbs_g,fat_g,kcal_per_100g,protein_per_100g,carbs_per_100g,fat_per_100g,source_note
+Roti / Chapati,chapati;phulka;fulka,indian_bread,1 medium roti,40,120,3.5,20.0,3.0,300.0,8.8,50.0,7.5,approximate typical values per serving; verify against INDB/IFCT/USDA before production use
+Phulka (no oil),fulka;dry roti,indian_bread,1 piece,30,85,3.0,17.0,0.5,283.3,10.0,56.7,1.7,approximate typical values per serving; verify against INDB/IFCT/USDA before production use
+Plain Paratha,paratha,indian_bread,1 piece,80,260,5.5,36.0,10.0,325.0,6.9,45.0,12.5,approximate typical values per serving; verify against INDB/IFCT/USDA before production use
+Aloo Paratha,potato paratha,indian_bread,1 piece,120,290,6.0,42.0,11.0,241.7,5.0,35.0,9.2,approximate typical values per serving; verify against INDB/IFCT/USDA before production use
+Naan,butter naan;tandoori naan,indian_bread,1 piece,90,262,8.7,45.0,5.1,291.1,9.7,50.0,5.7,approximate typical values per serving; verify against INDB/IFCT/USDA before production use
+Puri,poori,indian_bread,1 piece,30,100,2.0,12.0,5.0,333.3,6.7,40.0,16.7,approximate typical values per serving; verify against INDB/IFCT/USDA before production use
+White Rice (cooked),steamed rice;chawal;plain rice,rice,1 katori,150,195,4.0,43.0,0.4,130.0,2.7,28.7,0.3,approximate typical values per serving; verify against INDB/IFCT/USDA before production use
+Brown Rice (cooked),brown rice,rice,1 katori,150,167,3.9,35.0,1.3,111.3,2.6,23.3,0.9,approximate typical values per serving; verify against INDB/IFCT/USDA before production use
+Jeera Rice,cumin rice,rice,1 katori,150,220,4.0,38.0,5.0,146.7,2.7,25.3,3.3,approximate typical values per serving; verify against INDB/IFCT/USDA before production use
+Vegetable Biryani,veg biryani;veg pulao,rice,1 plate,250,350,7.0,55.0,11.0,140.0,2.8,22.0,4.4,approximate typical values per serving; verify against INDB/IFCT/USDA before production use
+Chicken Biryani,biryani,rice,1 plate,250,400,20.0,50.0,12.0,160.0,8.0,20.0,4.8,approximate typical values per serving; verify against INDB/IFCT/USDA before production use
+Khichdi,dal khichdi,rice,1 bowl,200,230,8.0,38.0,5.0,115.0,4.0,19.0,2.5,approximate typical values per serving; verify against INDB/IFCT/USDA before production use
+Dal Tadka,dal fry;toor dal;arhar dal;yellow dal,dal,1 katori,150,150,8.0,20.0,4.0,100.0,5.3,13.3,2.7,approximate typical values per serving; verify against INDB/IFCT/USDA before production use
+Moong Dal,green gram dal,dal,1 katori,150,120,8.0,18.0,2.0,80.0,5.3,12.0,1.3,approximate typical values per serving; verify against INDB/IFCT/USDA before production use
+Rajma Curry,rajma;kidney bean curry,dal,1 katori,150,160,7.0,22.0,4.0,106.7,4.7,14.7,2.7,approximate typical values per serving; verify against INDB/IFCT/USDA before production use
+Chole,chana masala;chickpea curry,dal,1 katori,150,210,9.0,28.0,7.0,140.0,6.0,18.7,4.7,approximate typical values per serving; verify against INDB/IFCT/USDA before production use
+Sambar,sambhar,dal,1 katori,150,80,4.0,12.0,2.0,53.3,2.7,8.0,1.3,approximate typical values per serving; verify against INDB/IFCT/USDA before production use
+Paneer (plain),cottage cheese;paneer cubes,dairy,50 g,50,132,9.0,1.5,10.0,264.0,18.0,3.0,20.0,approximate typical values per serving; verify against INDB/IFCT/USDA before production use
+Paneer Butter Masala,paneer makhani,curry,1 katori,150,330,12.0,10.0,27.0,220.0,8.0,6.7,18.0,approximate typical values per serving; verify against INDB/IFCT/USDA before production use
+Palak Paneer,spinach paneer,curry,1 katori,150,240,11.0,8.0,18.0,160.0,7.3,5.3,12.0,approximate typical values per serving; verify against INDB/IFCT/USDA before production use
+Aloo Gobi,potato cauliflower sabzi,curry,1 katori,150,150,4.0,17.0,7.0,100.0,2.7,11.3,4.7,approximate typical values per serving; verify against INDB/IFCT/USDA before production use
+Bhindi Masala,okra sabzi,curry,1 katori,100,100,2.0,8.0,7.0,100.0,2.0,8.0,7.0,approximate typical values per serving; verify against INDB/IFCT/USDA before production use
+Mixed Veg Curry,sabzi;mix veg,curry,1 katori,150,130,3.0,14.0,7.0,86.7,2.0,9.3,4.7,approximate typical values per serving; verify against INDB/IFCT/USDA before production use
+Chicken Curry,chicken masala,curry,1 katori,150,240,20.0,6.0,15.0,160.0,13.3,4.0,10.0,approximate typical values per serving; verify against INDB/IFCT/USDA before production use
+Butter Chicken,murgh makhani,curry,1 katori,150,290,18.0,8.0,21.0,193.3,12.0,5.3,14.0,approximate typical values per serving; verify against INDB/IFCT/USDA before production use
+Egg Curry,anda curry,curry,2 eggs with gravy,200,270,14.0,8.0,20.0,135.0,7.0,4.0,10.0,approximate typical values per serving; verify against INDB/IFCT/USDA before production use
+Fish Curry,machli curry,curry,1 katori,150,200,18.0,5.0,12.0,133.3,12.0,3.3,8.0,approximate typical values per serving; verify against INDB/IFCT/USDA before production use
+Curd / Dahi,yogurt;plain curd,dairy,1 katori,100,60,3.5,4.7,3.3,60.0,3.5,4.7,3.3,approximate typical values per serving; verify against INDB/IFCT/USDA before production use
+Raita,boondi raita;veg raita,dairy,1 katori,100,55,3.0,5.0,2.5,55.0,3.0,5.0,2.5,approximate typical values per serving; verify against INDB/IFCT/USDA before production use
+Idli,steamed idli,south_indian,1 piece,40,58,2.0,12.0,0.4,145.0,5.0,30.0,1.0,approximate typical values per serving; verify against INDB/IFCT/USDA before production use
+Plain Dosa,dosa,south_indian,1 piece,80,135,3.0,22.0,3.5,168.8,3.8,27.5,4.4,approximate typical values per serving; verify against INDB/IFCT/USDA before production use
+Masala Dosa,masala dosai,south_indian,1 piece,180,250,5.0,38.0,8.0,138.9,2.8,21.1,4.4,approximate typical values per serving; verify against INDB/IFCT/USDA before production use
+Medu Vada,vada;urad vada,south_indian,1 piece,40,97,3.0,9.5,5.5,242.5,7.5,23.8,13.8,approximate typical values per serving; verify against INDB/IFCT/USDA before production use
+Upma,rava upma,breakfast,1 bowl,150,190,4.0,30.0,6.0,126.7,2.7,20.0,4.0,approximate typical values per serving; verify against INDB/IFCT/USDA before production use
+Poha,flattened rice,breakfast,1 bowl,150,195,4.0,33.0,5.0,130.0,2.7,22.0,3.3,approximate typical values per serving; verify against INDB/IFCT/USDA before production use
+Besan Chilla,gram flour pancake,breakfast,1 piece,60,110,5.0,13.0,4.0,183.3,8.3,21.7,6.7,approximate typical values per serving; verify against INDB/IFCT/USDA before production use
+Dhokla,khaman dhokla,snack,2 pieces,60,100,3.5,15.0,3.0,166.7,5.8,25.0,5.0,approximate typical values per serving; verify against INDB/IFCT/USDA before production use
+Samosa,aloo samosa,snack,1 piece,60,155,3.0,17.0,8.5,258.3,5.0,28.3,14.2,approximate typical values per serving; verify against INDB/IFCT/USDA before production use
+Pav Bhaji,bhaji pav,snack,1 plate with 2 pav,250,400,9.0,55.0,16.0,160.0,3.6,22.0,6.4,approximate typical values per serving; verify against INDB/IFCT/USDA before production use
+Gulab Jamun,,sweet,1 piece,40,150,2.0,22.0,6.0,375.0,5.0,55.0,15.0,approximate typical values per serving; verify against INDB/IFCT/USDA before production use
+Jalebi,,sweet,1 piece,30,100,1.0,18.0,3.0,333.3,3.3,60.0,10.0,approximate typical values per serving; verify against INDB/IFCT/USDA before production use
+Kheer,rice pudding,sweet,1 katori,100,130,4.0,20.0,4.0,130.0,4.0,20.0,4.0,approximate typical values per serving; verify against INDB/IFCT/USDA before production use
+Masala Chai (milk + sugar),tea;chai,drink,1 cup,150,70,2.0,10.0,2.5,46.7,1.3,6.7,1.7,approximate typical values per serving; verify against INDB/IFCT/USDA before production use
+Milk (whole),doodh;full cream milk,drink,1 glass,244,149,7.7,11.7,7.9,61.1,3.2,4.8,3.2,approximate typical values per serving; verify against INDB/IFCT/USDA before production use
+Cola,soft drink;soda,drink,1 can,330,139,0.0,35.0,0.0,42.1,0.0,10.6,0.0,approximate typical values per serving; verify against INDB/IFCT/USDA before production use
+Boiled Egg,egg;anda,protein,1 large,50,78,6.3,0.6,5.3,156.0,12.6,1.2,10.6,approximate typical values per serving; verify against INDB/IFCT/USDA before production use
+Fried Egg,sunny side up,protein,1 large,46,90,6.3,0.4,7.0,195.7,13.7,0.9,15.2,approximate typical values per serving; verify against INDB/IFCT/USDA before production use
+Omelette (2 eggs),omelet,protein,2 eggs,120,190,13.0,1.5,14.0,158.3,10.8,1.2,11.7,approximate typical values per serving; verify against INDB/IFCT/USDA before production use
+Grilled Chicken Breast,chicken breast,protein,100 g,100,165,31.0,0.0,3.6,165.0,31.0,0.0,3.6,approximate typical values per serving; verify against INDB/IFCT/USDA before production use
+Fried Chicken,chicken fry,protein,1 piece,100,250,19.0,10.0,15.0,250.0,19.0,10.0,15.0,approximate typical values per serving; verify against INDB/IFCT/USDA before production use
+White Bread,bread slice,bread,1 slice,28,75,2.5,14.0,1.0,267.9,8.9,50.0,3.6,approximate typical values per serving; verify against INDB/IFCT/USDA before production use
+Whole Wheat Bread,brown bread,bread,1 slice,32,80,4.0,14.0,1.0,250.0,12.5,43.8,3.1,approximate typical values per serving; verify against INDB/IFCT/USDA before production use
+Veg Sandwich,sandwich,fast_food,1 sandwich,150,300,9.0,38.0,12.0,200.0,6.0,25.3,8.0,approximate typical values per serving; verify against INDB/IFCT/USDA before production use
+Cheese Pizza,pizza slice,fast_food,1 slice,107,285,12.0,36.0,10.0,266.4,11.2,33.6,9.3,approximate typical values per serving; verify against INDB/IFCT/USDA before production use
+Cheeseburger,burger,fast_food,1 burger,120,300,15.0,30.0,14.0,250.0,12.5,25.0,11.7,approximate typical values per serving; verify against INDB/IFCT/USDA before production use
+French Fries,chips;fries,fast_food,1 serving,100,312,3.4,41.0,15.0,312.0,3.4,41.0,15.0,approximate typical values per serving; verify against INDB/IFCT/USDA before production use
+Pasta (cooked),spaghetti;macaroni,grain,1 cup,140,220,8.0,43.0,1.3,157.1,5.7,30.7,0.9,approximate typical values per serving; verify against INDB/IFCT/USDA before production use
+Oats (cooked),oatmeal;porridge,grain,1 cup,234,166,5.9,28.0,3.6,70.9,2.5,12.0,1.5,approximate typical values per serving; verify against INDB/IFCT/USDA before production use
+Boiled Potato,aloo,vegetable,1 medium,150,130,2.8,30.0,0.2,86.7,1.9,20.0,0.1,approximate typical values per serving; verify against INDB/IFCT/USDA before production use
+Steamed Broccoli,broccoli,vegetable,100 g,100,35,2.4,7.0,0.4,35.0,2.4,7.0,0.4,approximate typical values per serving; verify against INDB/IFCT/USDA before production use
+Tomato,tamatar,vegetable,1 medium,123,22,1.1,4.8,0.2,17.9,0.9,3.9,0.2,approximate typical values per serving; verify against INDB/IFCT/USDA before production use
+Cucumber Salad,kheera;salad,vegetable,1 bowl,100,15,0.7,3.6,0.1,15.0,0.7,3.6,0.1,approximate typical values per serving; verify against INDB/IFCT/USDA before production use
+Mixed Green Salad,green salad,vegetable,1 bowl,100,20,1.5,3.5,0.2,20.0,1.5,3.5,0.2,approximate typical values per serving; verify against INDB/IFCT/USDA before production use
+Banana,kela,fruit,1 medium,118,105,1.3,27.0,0.4,89.0,1.1,22.9,0.3,approximate typical values per serving; verify against INDB/IFCT/USDA before production use
+Apple,seb,fruit,1 medium,182,95,0.5,25.0,0.3,52.2,0.3,13.7,0.2,approximate typical values per serving; verify against INDB/IFCT/USDA before production use
+Orange,santra,fruit,1 medium,131,62,1.2,15.0,0.2,47.3,0.9,11.5,0.2,approximate typical values per serving; verify against INDB/IFCT/USDA before production use
+Mango,aam,fruit,1 cup sliced,165,99,1.4,25.0,0.6,60.0,0.8,15.2,0.4,approximate typical values per serving; verify against INDB/IFCT/USDA before production use
+Grapes,angoor,fruit,100 g,100,69,0.7,18.0,0.2,69.0,0.7,18.0,0.2,approximate typical values per serving; verify against INDB/IFCT/USDA before production use
+Almonds,badam,nuts,28 g,28,164,6.0,6.0,14.0,585.7,21.4,21.4,50.0,approximate typical values per serving; verify against INDB/IFCT/USDA before production use
+Peanut Butter,,spread,1 tbsp,16,94,3.6,3.2,8.0,587.5,22.5,20.0,50.0,approximate typical values per serving; verify against INDB/IFCT/USDA before production use
+Cheddar Cheese,cheese slice,dairy,28 g,28,113,7.0,0.4,9.3,403.6,25.0,1.4,33.2,approximate typical values per serving; verify against INDB/IFCT/USDA before production use
+Ghee,clarified butter,fat,1 tsp,5,45,0.0,0.0,5.0,900.0,0.0,0.0,100.0,approximate typical values per serving; verify against INDB/IFCT/USDA before production use
+Butter,makhan,fat,1 tsp,5,36,0.0,0.0,4.0,720.0,0.0,0.0,80.0,approximate typical values per serving; verify against INDB/IFCT/USDA before production use
+Ice Cream (vanilla),,sweet,1/2 cup,66,137,2.3,16.0,7.3,207.6,3.5,24.2,11.1,approximate typical values per serving; verify against INDB/IFCT/USDA before production use

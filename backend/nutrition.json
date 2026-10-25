@@ -96,8 +96,11 @@
     {
       "name": "paneer",
       "aliases": [
-        "paneer tikka",
-        "fresh paneer"
+        "cottage cheese",
+        "fresh paneer",
+        "paneer (plain)",
+        "paneer cubes",
+        "paneer tikka"
       ],
       "serving": 100,
       "calories": 323,
