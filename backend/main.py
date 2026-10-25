@@ -215,7 +215,12 @@ def _parse_json(text: str) -> dict:
     match = re.search(r"\{.*\}", text, re.DOTALL)
     if not match:
         raise ValueError("no JSON object")
-    return json.loads(match.group(0))
+    raw = match.group(0)
+    try:
+        return json.loads(raw)
+    except json.JSONDecodeError:
+        # Models sometimes leave trailing commas; strip them and retry.
+        return json.loads(re.sub(r",\s*([}\]])", r"\1", raw))
 
 
 MOCK_RESPONSE = {
@@ -244,7 +249,7 @@ def _call_gemini(image_url: str) -> str:
                     ]
                 }
             ],
-            "generationConfig": {"temperature": 0.2, "maxOutputTokens": 1500},
+            "generationConfig": {"temperature": 0.2, "maxOutputTokens": 4096},
         },
         timeout=120,
     )
@@ -253,9 +258,19 @@ def _call_gemini(image_url: str) -> str:
         raise HTTPException(
             502, "Gemma API failed. Check the GEMINI_API_KEY and model name."
         )
-    parts = response.json()["candidates"][0]["content"]["parts"]
+    body = response.json()
+    candidate = (body.get("candidates") or [{}])[0]
+    parts = (candidate.get("content") or {}).get("parts") or []
     # Skip any "thought" parts; keep only the answer text.
-    return "".join(p.get("text", "") for p in parts if not p.get("thought"))
+    text = "".join(p.get("text", "") for p in parts if not p.get("thought"))
+    if not text.strip():
+        print(
+            "Gemini returned no answer text. finishReason:",
+            candidate.get("finishReason"),
+            "| promptFeedback:",
+            body.get("promptFeedback"),
+        )
+    return text
 
 
 def _call_huggingface(image_url: str) -> str:
@@ -306,6 +321,7 @@ async def analyze_meal(image: UploadFile = File(...)):
     if MOCK_MODE:
         data = MOCK_RESPONSE
     else:
+        content = ""
         try:
             content = (
                 _call_gemini(image_url) if GEMINI_API_KEY else _call_huggingface(image_url)
@@ -313,7 +329,8 @@ async def analyze_meal(image: UploadFile = File(...)):
             data = _parse_json(content)
         except requests.RequestException:
             raise HTTPException(502, "Could not connect to the model provider.")
-        except (KeyError, IndexError, ValueError, TypeError):
+        except (KeyError, IndexError, ValueError, TypeError) as exc:
+            print("Could not parse model output:", repr(exc), "| raw:", repr(content)[:1200])
             raise HTTPException(
                 502, "The model returned an unexpected response. Please try again."
             )
