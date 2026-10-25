@@ -1,7 +1,7 @@
 # DigitalOcean App Platform spec for HiperMeal.
 # Create the app with:  doctl apps create --spec .do/app.yaml
 # (or paste this into App Platform > Create App > Edit Your App Spec).
-# After creating, open the app's Settings and set the HF_TOKEN secret.
+# After creating, open the app's Settings and set the GEMINI_API_KEY secret.
 name: hipermeal
 region: blr  # Bangalore; change if you prefer another region
 services:
@@ -19,7 +19,7 @@ services:
     health_check:
       http_path: /health
     envs:
-      - key: HF_TOKEN
+      - key: GEMINI_API_KEY
         scope: RUN_TIME
         type: SECRET
         # value is set in the DigitalOcean dashboard, never committed

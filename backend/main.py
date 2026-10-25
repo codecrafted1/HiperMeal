@@ -1,4 +1,4 @@
-﻿import base64
+import base64
 import io
 import json
 import os
@@ -29,7 +29,12 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-MODEL = os.getenv("GEMMA_MODEL", "google/gemma-4-E4B-it")
+# Primary: Gemma 4 through the Gemini API (set GEMINI_API_KEY).
+# Fallback: Hugging Face Inference Providers (set HF_TOKEN).
+GEMINI_API_KEY = os.getenv("GEMINI_API_KEY") or os.getenv("GOOGLE_API_KEY")
+GEMINI_MODEL = os.getenv("GEMINI_MODEL", "gemma-4-26b-a4b-it")
+GEMINI_URL = "https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent"
+MODEL = os.getenv("GEMMA_MODEL", "google/gemma-4-26B-A4B-it")
 API_URL = os.getenv(
     "GEMMA_API_URL", "https://router.huggingface.co/v1/chat/completions"
 )
@@ -138,7 +143,13 @@ def home():
 
 @app.get("/health")
 def health():
-    return {"status": "ok", "mock": MOCK_MODE, "model": MODEL}
+    provider = "mock" if MOCK_MODE else "gemini" if GEMINI_API_KEY else "huggingface"
+    return {
+        "status": "ok",
+        "mock": MOCK_MODE,
+        "provider": provider,
+        "model": GEMINI_MODEL if provider == "gemini" else MODEL,
+    }
 
 
 @app.get("/foods")
@@ -218,6 +229,69 @@ MOCK_RESPONSE = {
 }
 
 
+def _call_gemini(image_url: str) -> str:
+    """Gemma 4 via the Gemini API (generateContent) with an inline image."""
+    b64 = image_url.split(",", 1)[1]
+    response = requests.post(
+        GEMINI_URL.format(model=GEMINI_MODEL),
+        headers={"x-goog-api-key": GEMINI_API_KEY, "Content-Type": "application/json"},
+        json={
+            "contents": [
+                {
+                    "parts": [
+                        {"inline_data": {"mime_type": "image/jpeg", "data": b64}},
+                        {"text": PROMPT},
+                    ]
+                }
+            ],
+            "generationConfig": {"temperature": 0.2, "maxOutputTokens": 1500},
+        },
+        timeout=120,
+    )
+    if response.status_code != 200:
+        print("Gemini API error:", response.status_code, response.text[:500])
+        raise HTTPException(
+            502, "Gemma API failed. Check the GEMINI_API_KEY and model name."
+        )
+    parts = response.json()["candidates"][0]["content"]["parts"]
+    # Skip any "thought" parts; keep only the answer text.
+    return "".join(p.get("text", "") for p in parts if not p.get("thought"))
+
+
+def _call_huggingface(image_url: str) -> str:
+    token = os.getenv("HF_TOKEN")
+    if not token:
+        raise HTTPException(
+            503, "No model key configured. Set GEMINI_API_KEY (or HF_TOKEN) on the server."
+        )
+    response = requests.post(
+        API_URL,
+        headers={"Authorization": f"Bearer {token}", "Content-Type": "application/json"},
+        json={
+            "model": MODEL,
+            "messages": [
+                {
+                    "role": "user",
+                    "content": [
+                        {"type": "text", "text": PROMPT},
+                        {"type": "image_url", "image_url": {"url": image_url}},
+                    ],
+                }
+            ],
+            "max_tokens": 700,
+            "temperature": 0.2,
+        },
+        timeout=120,
+    )
+    if response.status_code != 200:
+        print("Model API error:", response.status_code, response.text[:500])
+        raise HTTPException(
+            502,
+            "Gemma API failed. Check model availability, token permissions and provider access.",
+        )
+    return response.json()["choices"][0]["message"]["content"]
+
+
 @app.post("/analyze")
 async def analyze_meal(image: UploadFile = File(...)):
     if not image.content_type or not image.content_type.startswith("image/"):
@@ -232,39 +306,10 @@ async def analyze_meal(image: UploadFile = File(...)):
     if MOCK_MODE:
         data = MOCK_RESPONSE
     else:
-        token = os.getenv("HF_TOKEN")
-        if not token:
-            raise HTTPException(503, "HF_TOKEN is not configured on the server.")
         try:
-            response = requests.post(
-                API_URL,
-                headers={
-                    "Authorization": f"Bearer {token}",
-                    "Content-Type": "application/json",
-                },
-                json={
-                    "model": MODEL,
-                    "messages": [
-                        {
-                            "role": "user",
-                            "content": [
-                                {"type": "text", "text": PROMPT},
-                                {"type": "image_url", "image_url": {"url": image_url}},
-                            ],
-                        }
-                    ],
-                    "max_tokens": 700,
-                    "temperature": 0.2,
-                },
-                timeout=120,
+            content = (
+                _call_gemini(image_url) if GEMINI_API_KEY else _call_huggingface(image_url)
             )
-            if response.status_code != 200:
-                print("Model API error:", response.status_code, response.text[:500])
-                raise HTTPException(
-                    502,
-                    "Gemma API failed. Check model availability, token permissions and provider access.",
-                )
-            content = response.json()["choices"][0]["message"]["content"]
             data = _parse_json(content)
         except requests.RequestException:
             raise HTTPException(502, "Could not connect to the model provider.")
