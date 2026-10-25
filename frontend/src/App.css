@@ -1759,3 +1759,36 @@ label:focus-within {
     font-size: 15px;
   }
 }
+
+/* ---------- Review rows: name gets a full-width line ---------- */
+.review-head {
+  display: none;
+}
+
+.review-row {
+  grid-template-columns: 92px minmax(0, 1fr) 32px;
+  grid-template-areas:
+    "name name name"
+    "grams kcal del"
+    "src src src";
+  row-gap: 6px;
+}
+
+.review-row .review-name { grid-area: name; }
+.review-row .review-grams { grid-area: grams; }
+.review-row .review-kcal { grid-area: kcal; padding-right: 4px; }
+.review-row .remove-button { grid-area: del; }
+.review-row .review-source { grid-area: src; margin-top: 0; }
+
+.review-kcal::after {
+  content: " kcal";
+  color: #98a58b;
+  font-size: 11px;
+  font-weight: 500;
+}
+
+@media (max-width: 480px) {
+  .review-row {
+    grid-template-columns: 92px minmax(0, 1fr) 32px;
+  }
+}

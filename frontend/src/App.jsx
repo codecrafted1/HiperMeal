@@ -117,6 +117,11 @@ function App() {
     { ...ZERO }
   );
   const hasToday = todayMeals.length > 0;
+  // While reviewing a freshly analysed meal, the nutrition card previews that meal;
+  // once it is logged (or discarded) it goes back to today's totals.
+  const reviewing = Boolean(items && items.length > 0);
+  const shown = reviewing ? draftTotals : todayTotals;
+  const hasShown = reviewing || hasToday;
 
   function handleImage(event) {
     const selected = event.target.files?.[0];
@@ -603,26 +608,26 @@ function App() {
 
                 <div className="calorie-visual">
                   <div className="calorie-ring">
-                    <svg viewBox="0 0 160 160" className="ring-svg" aria-label={hasToday ? `${round(todayTotals.calories)} kcal logged today` : "No meals logged yet"}>
+                    <svg viewBox="0 0 160 160" className="ring-svg" aria-label={hasShown ? `${round(shown.calories)} kcal logged today` : "No meals logged yet"}>
                       <circle cx="80" cy="80" r="65" className="ring-track" />
                       <circle
                         cx="80"
                         cy="80"
                         r="65"
                         className="ring-progress"
-                        style={{ strokeDashoffset: 408.4 * (1 - Math.min(1, todayTotals.calories / REFERENCE.calories)) }}
+                        style={{ strokeDashoffset: 408.4 * (1 - Math.min(1, shown.calories / REFERENCE.calories)) }}
                       />
                     </svg>
                     <div className="ring-center">
                       <span className="ring-flame"><Flame size={21} /></span>
-                      <strong>{hasToday ? round(todayTotals.calories) : "—"}</strong>
-                      <span>kcal logged</span>
+                      <strong>{hasShown ? round(shown.calories) : "—"}</strong>
+                      <span>{reviewing ? "kcal in this meal" : "kcal logged"}</span>
                     </div>
                   </div>
                   <div className="calorie-copy">
-                    <span className="calorie-status"><span /> {hasToday ? "TODAY SO FAR" : "READY WHEN YOU ARE"}</span>
+                    <span className="calorie-status"><span /> {reviewing ? "PREVIEW - NOT LOGGED YET" : hasShown ? "TODAY SO FAR" : "READY WHEN YOU ARE"}</span>
                     <h4>Every meal<br />tells a story.</h4>
-                    <p>{hasToday ? "Totals from the meals you confirmed today." : "Log your first meal to see its nutritional breakdown."}</p>
+                    <p>{reviewing ? "Totals for the meal you are reviewing. Confirm it to add it to your diary." : hasShown ? "Totals from the meals you confirmed today." : "Log your first meal to see its nutritional breakdown."}</p>
                   </div>
                 </div>
 
@@ -632,9 +637,9 @@ function App() {
                       <span className={`macro-icon ${color}`}><Icon size={15} /></span>
                       <span className="macro-name">{name}</span>
                       <div className="macro-track">
-                        <span className={color} style={{ width: `${Math.min(100, (todayTotals[key] / REFERENCE[key]) * 100)}%` }} />
+                        <span className={color} style={{ width: `${Math.min(100, (shown[key] / REFERENCE[key]) * 100)}%` }} />
                       </div>
-                      <span className="macro-value">{hasToday ? `${round(todayTotals[key])} g` : "— g"}</span>
+                      <span className="macro-value">{hasShown ? `${round(shown[key])} g` : "— g"}</span>
                     </div>
                   ))}
                 </div>
