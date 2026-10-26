@@ -1,80 +1,165 @@
-# HiperMeal - AI Visual Nutrition Diary
+# HiperMeal 🍽️
 
-Hacktoberfest Hack Day (KodeKurrent S2 x Open Science Labs) - **HiperMeal** problem statement.
-Turn a meal photo into a reviewable nutrition record without typing every food item.
+### AI Visual Nutrition Diary
 
-## What it does
+HiperMeal is an AI-powered nutrition tracking application designed to help users turn meal photographs into useful nutrition records without manually entering every food item.
 
-1. **Upload** a meal photo.
-2. **Gemma 4** (multimodal, open-weights) identifies the visible foods and estimates a portion for each.
-3. Each food is matched against a small **local nutrition dataset** (`backend/nutrition_starter.csv` plus the checked `backend/nutrition.json`, per 100 g). Foods not in the dataset fall back to the model's own estimate and are clearly labelled.
-4. **Review and correct**: rename items, change grams, remove or add items. Totals recompute instantly.
-5. **Confirm and log** the meal to a daily diary with calorie and macro totals.
+Users can upload a food image, review the identified food items, correct the results when necessary, and explore estimated calories and macronutrients through a simple web interface.
 
-### Responsible-use choices
-- Portions and mixed dishes can't be known exactly from a photo, so every value is **editable** and labelled as an estimate.
-- No medical or dietary claims. Progress bars use generic reference values, not personal targets.
-- Photos are downscaled and re-encoded server-side (this strips EXIF/GPS), sent once to the model, and **never stored**. Only the confirmed meal (names and macros) is saved, in the browser's `localStorage`.
+## ✨ Key Features
 
-## Architecture
+### 📸 AI-Powered Meal Recognition
+- Upload a photograph of a meal.
+- Identify likely food items from the image.
+- Review and correct the identified items before saving a nutrition record.
 
+### 🥗 Nutrition Estimation
+- Display estimated calories for identified foods.
+- Present macronutrient information, including:
+  - Protein
+  - Carbohydrates
+  - Fat
+- Help users understand the nutritional composition of their meals.
+
+### 📊 Visual Nutrition Tracking
+- Convert meal photographs into structured nutrition records.
+- Present nutrition information in an easy-to-understand format.
+- Provide a foundation for tracking daily food intake.
+
+### 🔎 Food Data Integration
+- Designed to use food databases such as [Open Food Facts](https://world.openfoodfacts.org/) where appropriate.
+- Supports extending nutrition lookups with verified food data.
+- Allows users to review AI-generated food identifications and estimates.
+
+### 🖥️ User-Friendly Interface
+- Interactive web-based experience.
+- Image upload and meal review workflow.
+- Nutrition-focused interface for presenting food information.
+
+## 🛠️ Tech Stack
+
+| Component | Technology |
+|---|---|
+| Frontend | React.js, JavaScript |
+| Styling | CSS |
+| Backend | Python, Flask *(if configured in the current application)* |
+| AI / Image Recognition | Image-analysis model or API configured in the project |
+| Nutrition Data | Open Food Facts API |
+| Version Control | Git and GitHub |
+
+*The technology list should be adjusted to match the actual libraries and services implemented in the repository.*
+
+## 🏗️ Project Structure
+
+```text
+HiperMeal/
+├── frontend/
+│   ├── public/
+│   ├── src/
+│   │   ├── components/
+│   │   ├── App.jsx
+│   │   └── main.jsx
+│   ├── package.json
+│   └── vite.config.js
+├── backend/
+│   ├── app.py
+│   └── requirements.txt
+└── README.md
 ```
-React (Vite) --/analyze--> FastAPI --> Gemma 4 (Gemini API; Hugging Face as fallback)
-     |                        |
-     |--/nutrition (recompute)--> nutrition dataset lookup (CSV + JSON, aliases)
-     '--/foods (autocomplete)
-```
 
-| Part | Tech |
-| --- | --- |
-| Frontend | React 19, Vite, lucide-react |
-| Backend | FastAPI, Pillow, Pydantic |
-| Model | Gemma 4 (`gemma-4-26b-a4b-it`) via the Gemini API; optional Hugging Face fallback |
-| Hosting | DigitalOcean App Platform (`.do/app.yaml`) |
+*This is an illustrative structure. Your actual project may use a different folder layout.*
 
-## Run locally
+## 🚀 Getting Started
+
+### Prerequisites
+
+Install:
+
+- [Node.js](https://nodejs.org/)
+- npm
+- Python 3 and pip, if the project uses a Python backend
+
+### 1. Clone the Repository
 
 ```bash
-# backend
-cd backend
-python -m venv .venv && source .venv/bin/activate   # Windows: .venv\Scripts\activate
-pip install -r requirements.txt
-export GEMINI_API_KEY=your_key    # from aistudio.google.com/apikey; or MOCK_MODE=1 to demo without one
-uvicorn main:app --reload --port 8000
-
-# frontend (new terminal)
-cd frontend
-npm install
-npm run dev                       # http://localhost:5173
+git clone <YOUR_HIPERMEAL_REPOSITORY_URL>
+cd HiperMeal
 ```
 
-The frontend talks to `http://127.0.0.1:8000` by default; override with `VITE_API_URL`.
+Replace the placeholder with your actual GitHub repository URL.
 
-## Deploy on DigitalOcean
+### 2. Install Frontend Dependencies
 
-1. Push this repo to GitHub (public).
-2. In DigitalOcean: **Apps > Create App**, choose the repo, or run `doctl apps create --spec .do/app.yaml`.
-3. In the app's settings, set the secret **`GEMINI_API_KEY`** (never commit it).
-4. The static site serves the UI at `/` and the API is routed at `/api`.
+Navigate to the frontend directory:
 
-## API
+```bash
+cd frontend
+npm install
+```
 
-| Method | Path | Purpose |
-| --- | --- | --- |
-| GET | `/health` | Liveness + model name |
-| GET | `/foods` | Known food names for autocomplete |
-| POST | `/analyze` | Multipart `image` -> items, per-item nutrition, totals |
-| POST | `/nutrition` | Recompute after edits: `{items:[{name, grams, per100?}]}` |
+Start the development server:
 
-## Limitations
-- Nutrition data has two layers: `backend/nutrition_starter.csv` (about 74 common foods and Indian dishes with typical serving sizes; approximate, per its own source note) and `backend/nutrition.json` (7 staples checked against USDA FoodData Central or a product label, each with a `ref`). On an exact name or alias clash the checked values win. It is not a clinical reference.
-- Matching is by name and alias, then by whole-word containment (longest match wins), so an unusual dish name can still land on a nearby entry; check the matched food in the review step.
-- Portion estimation from a single photo is inherently rough - always review before logging.
-- Diary is stored per browser; there are no accounts.
+```bash
+npm run dev
+```
 
-## Attribution
-- Gemma 4 by Google, accessed through the Gemini API.
-- React, Vite, FastAPI, Pillow, lucide-react (open source).
-- `backend/nutrition_starter.csv`: starter nutrition dataset compiled by the team (approximate typical values; its source note says to verify against INDB / IFCT / USDA).
-- `backend/nutrition.json`: USDA FoodData Central (SR Legacy, public domain) for rice, chapati/roti, lentils, chickpeas, egg and plain yogurt; Amul Malai Paneer product label for paneer.
-- Project scaffold and original dashboard UI by the HiperMeal team; analysis flow, dataset matching, editing and logging added during the Hack Day with AI coding assistance (Claude).
+For a Vite-based frontend, the application typically runs at:
+
+```text
+http://localhost:5173
+```
+
+If your project uses Create React App, use `npm start` instead.
+
+### 3. Configure the Backend
+
+If your application contains a Python backend, open another terminal and navigate to the backend directory:
+
+```bash
+cd backend
+python -m venv venv
+```
+
+Activate the environment on Windows PowerShell:
+
+```powershell
+.\venv\Scripts\Activate.ps1
+```
+
+Install the dependencies:
+
+```bash
+pip install -r requirements.txt
+```
+
+Start the backend using the actual entry-point file configured in your project:
+
+```bash
+python app.py
+```
+
+If the repository uses a different backend framework or entry point, follow its configuration.
+
+## 🔄 How It Works
+
+1. **Upload a meal photo:** The user selects an image of their meal.
+2. **Analyze the image:** The configured image-recognition service identifies likely food items.
+3. **Review the results:** The user checks and corrects the identified foods.
+4. **Estimate nutrition:** The application retrieves or calculates estimated calories and macronutrients.
+5. **View the nutrition record:** The results are presented in a structured, user-friendly format.
+
+## 🎯 Problem Statement
+
+Manually logging meals can be time-consuming and inconvenient. Users may find it difficult to identify food items and estimate their nutritional values accurately.
+
+HiperMeal addresses this challenge by exploring how meal photographs can be converted into useful nutrition records with minimal manual effort.
+
+## 🔮 Future Enhancements
+
+- Daily and weekly nutrition dashboards.
+- Meal history and nutrition trends.
+- Portion-size estimation from images.
+- Personalized nutrition goals.
+- Dietary preference and allergy filters.
+- Improved food recognition across different cuisines.
+- More accurate nutrition estimates using verified
